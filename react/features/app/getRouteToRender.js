@@ -12,9 +12,11 @@ import { UnsupportedDesktopBrowser } from '../unsupported-browser';
 import {
     BlankPage,
     WelcomePage,
+    SignIn,
     isWelcomePageAppEnabled,
     isWelcomePageUserEnabled
 } from '../welcome';
+import SignInComponent from '../welcome/components/SignInComponent';
 
 /**
  * Object describing application route.
@@ -43,6 +45,8 @@ export function _getRouteToRender(stateful: Function | Object): Promise<Route> {
     if (navigator.product === 'ReactNative') {
         return _getMobileRoute(state);
     }
+
+    // return _getWebSignInPageRoute(state);
 
     return _getWebConferenceRoute(state) || _getWebWelcomePageRoute(state);
 }
@@ -105,6 +109,19 @@ function _getWebConferenceRoute(state): ?Promise<Route> {
 
             return route;
         });
+}
+
+// eslint-disable-next-line require-jsdoc,no-unused-vars
+function _getWebSignInPageRoute(state): Promise<Route> {
+    const route = _getEmptyRoute();
+
+    if (isSupportedBrowser()) {
+        route.component = SignInComponent;
+    } else {
+        route.component = UnsupportedDesktopBrowser;
+    }
+
+    return Promise.resolve(route);
 }
 
 /**

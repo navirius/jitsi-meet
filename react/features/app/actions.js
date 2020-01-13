@@ -42,6 +42,7 @@ declare var APP: Object;
  */
 export function appNavigate(uri: ?string) {
     return async (dispatch: Dispatch<any>, getState: Function) => {
+        console.log(`uri : ${uri}`, uri);
         let location = parseURIString(uri);
 
         // If the specified location (URI) does not identify a host, use the app's

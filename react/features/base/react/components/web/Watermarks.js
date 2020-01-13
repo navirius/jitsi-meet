@@ -13,7 +13,7 @@ declare var interfaceConfig: Object;
  * @private
  */
 const _RIGHT_WATERMARK_STYLE = {
-    backgroundImage: 'url(images/rightwatermark.png)'
+    backgroundImage: ''// url(images/rightwatermark.png)'
 };
 
 /**
@@ -107,7 +107,8 @@ class Watermarks extends Component<Props, State> {
             showBrandWatermark,
             showJitsiWatermark,
             showJitsiWatermarkForGuests,
-            showPoweredBy: interfaceConfig.SHOW_POWERED_BY
+            showPoweredBy: interfaceConfig.SHOW_POWERED_BY,
+            childVisible: false
         };
     }
 
@@ -129,6 +130,7 @@ class Watermarks extends Component<Props, State> {
                 {
                     this._renderPoweredBy()
                 }
+
             </div>
         );
     }
@@ -142,6 +144,10 @@ class Watermarks extends Component<Props, State> {
     _renderBrandWatermark() {
         let reactElement = null;
 
+        if (!this.state.childVisible) {
+            return reactElement;
+        }
+
         if (this.state.showBrandWatermark) {
             reactElement = (
                 <div
@@ -154,7 +160,7 @@ class Watermarks extends Component<Props, State> {
             if (brandWatermarkLink) {
                 reactElement = (
                     <a
-                        href = { brandWatermarkLink }
+                        href = '' // { brandWatermarkLink }
                         target = '_new'>
                         { reactElement }
                     </a>
@@ -174,6 +180,10 @@ class Watermarks extends Component<Props, State> {
     _renderJitsiWatermark() {
         let reactElement = null;
 
+        if (!this.state.childVisible) {
+            return reactElement;
+        }
+
         if (this.state.showJitsiWatermark
                 || (this.props._isGuest
                     && this.state.showJitsiWatermarkForGuests)) {
@@ -184,7 +194,7 @@ class Watermarks extends Component<Props, State> {
             if (jitsiWatermarkLink) {
                 reactElement = (
                     <a
-                        href = { jitsiWatermarkLink }
+                        href = '' // { jitsiWatermarkLink }
                         target = '_new'>
                         { reactElement }
                     </a>
@@ -202,13 +212,16 @@ class Watermarks extends Component<Props, State> {
      * @returns {ReactElement|null}
      */
     _renderPoweredBy() {
+        if (!this.state.childVisible) {
+            return null;
+        }
         if (this.state.showPoweredBy) {
             const { t } = this.props;
 
             return (
                 <a
                     className = 'poweredby'
-                    href = 'http://jitsi.org'
+                    href = '' // 'http://jitsi.org'
                     target = '_new'>
                     <span>{ t('poweredby') } jitsi.org</span>
                 </a>

@@ -73,7 +73,11 @@ export class AbstractWelcomePage extends Component<Props, *> {
         joining: false,
         room: '',
         roomPlaceholder: '',
-        updateTimeoutId: undefined
+        updateTimeoutId: undefined,
+        username: '',
+        password: '',
+        loginPlaceholder: '',
+        isLogined: false
     };
 
     /**

@@ -288,5 +288,17 @@ export default {
     welcomePage: {
         backgroundColor: ColorPalette.blue,
         overflow: 'hidden'
+    },
+
+    horizontalcenter: {
+        margin: 'auto',
+        marginLeft: 'auto',
+        marginRight: 'auto',
+        width: 60,
+        padding: 10
+    },
+
+    expandfull: {
+        width: 'auto'
     }
 };

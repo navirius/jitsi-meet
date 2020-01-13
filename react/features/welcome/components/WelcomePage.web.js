@@ -66,7 +66,8 @@ class WelcomePage extends AbstractWelcomePage {
         this._additionalContentRef = null;
 
         this._roomInputRef = null;
-
+        this._userInputRef = null;
+        this._passwordInputRef = null;
         /**
          * The HTML Element used as the container for additional toolbar content. Used
          * for directly appending the additional content template to the dom.
@@ -167,7 +168,8 @@ class WelcomePage extends AbstractWelcomePage {
                 className = { `welcome ${showAdditionalContent
                     ? 'with-content' : 'without-content'}` }
                 id = 'welcome_page'>
-                <div className = 'welcome-watermark'>
+                <div
+                    className = 'welcome-watermark'>
                     <Watermarks />
                 </div>
                 <div className = 'header'>
@@ -191,37 +193,53 @@ class WelcomePage extends AbstractWelcomePage {
                                 { app: APP_NAME }) }
                         </p>
                     </div>
-                    <div id = 'enter_room'>
-                        <div className = 'enter-room-input-container'>
-                            <div className = 'enter-room-title'>
-                                { t('welcomepage.enterRoomTitle') }
-                            </div>
-                            <form onSubmit = { this._onFormSubmit }>
-                                <input
-                                    autoFocus = { true }
-                                    className = 'enter-room-input'
-                                    id = 'enter_room_field'
-                                    onChange = { this._onRoomChange }
-                                    pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
-                                    placeholder = { this.state.roomPlaceholder }
-                                    ref = { this._setRoomInputRef }
-                                    title = { t('welcomepage.roomNameAllowedChars') }
-                                    type = 'text'
-                                    value = { this.state.room } />
-                            </form>
-                        </div>
+                    <div
+                        id = 'login_div'>
                         <div
-                            className = 'welcome-page-button'
-                            id = 'enter_room_button'
-                            onClick = { this._onFormSubmit }>
-                            {
-                                showResponsiveText
-                                    ? t('welcomepage.goSmall')
-                                    : t('welcomepage.go')
-                            }
+                            className = 'enter-room-input-container'>
+                            { t('welcomepage.enterLogin')}
                         </div>
+                        <form>
+                            <label>Login Name : </label>
+                            <input
+                                autoFocus = { true }
+                                className = 'enter-room-input'
+                                id = 'username_field'
+                                onChange = { this._onUserNameChanged }
+                                pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
+                                placeholder = { this.state.loginPlaceholder }
+                                ref = { this._setUserInputRef }
+                                title = 'Login Name'
+                                type = 'text'
+                                value = { this.state.username } />
+                            <br />
+                            <label>Password</label>
+                            <input
+                                autoFocus = { true }
+                                className = 'enter-room-input'
+                                id = 'password_field'
+                                onChange = { this._onPasswordChanged }
+                                pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
+                                placeholder = { this.state.loginPlaceholder }
+                                ref = { this._setPasswordInputRef }
+                                title = 'Password'
+                                type = 'password'
+                                value = { this.state.password } />
+                        </form>
                     </div>
-                    { this._renderTabs() }
+                    <div
+                        className = 'welcome-page-button'
+                        id = 'login_button'
+                        onClick = { this._onLoginSubmit() }>
+                        {
+                            showResponsiveText
+                                ? t('welcomepage.goSmall')
+                                : t('welcomepage.go')
+                        }
+                    </div>
+                    {
+                        this._renderDefault()
+                    }
                 </div>
                 { showAdditionalContent
                     ? <div
@@ -230,6 +248,83 @@ class WelcomePage extends AbstractWelcomePage {
                     : null }
             </div>
         );
+    }
+
+    // eslint-disable-next-line require-jsdoc
+    _renderDefault() {
+        if (this.state.isLogined) {
+            this._renderRoomName();
+            this._renderTabs();
+        }
+    }
+    // eslint-disable-next-line require-jsdoc,no-empty-function
+    _renderRoomName() {
+        const { t } = this.props;
+        const showResponsiveText = this._shouldShowResponsiveText();
+
+        return (
+            <div
+                id = 'enter_room' >
+                <div className = 'enter-room-input-container'>
+                    <div className = 'enter-room-title'>
+                        { t('welcomepage.enterRoomTitle') }
+                    </div>
+                    <form onSubmit = { this._onFormSubmit }>
+                        <input
+                            autoFocus = { true }
+                            className = 'enter-room-input'
+                            id = 'enter_room_field'
+                            onChange = { this._onRoomChange }
+                            pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
+                            placeholder = { this.state.roomPlaceholder }
+                            ref = { this._setRoomInputRef }
+                            title = { t('welcomepage.roomNameAllowedChars') }
+                            type = 'text'
+                            value = { this.state.room } />
+                    </form>
+                </div>
+                <div
+                    className = 'welcome-page-button'
+                    id = 'enter_room_button'
+                    onClick = { this._onFormSubmit }>
+                    {
+                        showResponsiveText
+                            ? t('welcomepage.goSmall')
+                            : t('welcomepage.go')
+                    }
+                </div>
+            </div>
+        );
+    }
+
+    // eslint-disable-next-line require-jsdoc
+    _setUserInputRef(el) {
+        this._userInputRef = el;
+    }
+    // eslint-disable-next-line require-jsdoc
+    _setPasswordInputRef(el) {
+        this._passwordInputRef = el;
+    }
+    // eslint-disable-next-line require-jsdoc
+    _onUserNameChanged(event) {
+        this.setState({ username: event.target.value });
+    }
+    // eslint-disable-next-line require-jsdoc
+    _onPasswordChanged(event) {
+        this.setState({ password: event.target.value });
+    }
+    // eslint-disable-next-line require-jsdoc
+    _onLoginSubmit() {
+        if (this.state.username.length === 0) {
+            alert('UserName can not empty');
+
+            return;
+        }
+        if (this.state.password.length === 0) {
+            alert('Password can not empty');
+
+            return;
+        }
     }
 
     /**
