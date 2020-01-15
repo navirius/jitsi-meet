@@ -290,6 +290,24 @@ export function parseStandardURIString(str: string) {
     return obj;
 }
 
+// eslint-disable-next-line require-jsdoc
+export function getParams(uri: ?string) {
+    let params = {};
+    let parser = document.createElement('a');
+
+    parser.href = uri;
+    let query = parser.search.substring(1);
+    let vars = query.split('&');
+
+    for (let i = 0; i < vars.length; i++) {
+        let pair = vars[i].split('=');
+
+        params[pair[0]] = decodeURIComponent(pair[1]);
+    }
+
+    return params;
+}
+
 /**
  * Parses a specific URI which (supposedly) references a Jitsi Meet resource
  * (location).

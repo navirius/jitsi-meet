@@ -16,7 +16,7 @@ import { loadConfig } from '../base/lib-jitsi-meet';
 import { createDesiredLocalTracks } from '../base/tracks';
 import {
     getBackendSafeRoomName,
-    getLocationContextRoot,
+    getLocationContextRoot, getParams,
     parseURIString,
     toURLString
 } from '../base/util';
@@ -44,6 +44,15 @@ export function appNavigate(uri: ?string) {
     return async (dispatch: Dispatch<any>, getState: Function) => {
         console.log(`uri : ${uri}`, uri);
         let location = parseURIString(uri);
+
+        const params = getParams(uri);
+
+        if (params.DialDialusername !== 'undefined') {
+            APP.conference.changeLocalDisplayName(params.username);
+        }
+        if (params.password !== 'undefined') {
+
+        }
 
         // If the specified location (URI) does not identify a host, use the app's
         // default.

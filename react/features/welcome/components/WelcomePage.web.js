@@ -208,7 +208,6 @@ class WelcomePage extends AbstractWelcomePage {
                                 onChange = { this._onUserNameChanged }
                                 pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
                                 placeholder = { this.state.loginPlaceholder }
-                                ref = { this._setUserInputRef }
                                 title = 'Login Name'
                                 type = 'text'
                                 value = { this.state.username } />
@@ -221,7 +220,6 @@ class WelcomePage extends AbstractWelcomePage {
                                 onChange = { this._onPasswordChanged }
                                 pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
                                 placeholder = { this.state.loginPlaceholder }
-                                ref = { this._setPasswordInputRef }
                                 title = 'Password'
                                 type = 'password'
                                 value = { this.state.password } />
@@ -230,7 +228,7 @@ class WelcomePage extends AbstractWelcomePage {
                     <div
                         className = 'welcome-page-button'
                         id = 'login_button'
-                        onClick = { this._onLoginSubmit() }>
+                        onClick = { this._onLoginSubmit }>
                         {
                             showResponsiveText
                                 ? t('welcomepage.goSmall')
