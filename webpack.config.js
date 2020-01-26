@@ -176,13 +176,13 @@ module.exports = [
         entry: {
             'app.bundle': './app.js'
         },
-        performance: getPerformanceHints(3 * 1024 * 1024)
+        performance: getPerformanceHints(4 * 1024 * 1024)
     }),
     Object.assign({}, config, {
         entry: {
             'device_selection_popup_bundle': './react/features/settings/popup.js'
         },
-        performance: getPerformanceHints(700 * 1024)
+        performance: getPerformanceHints(900 * 1024)
     }),
     Object.assign({}, config, {
         entry: {
