@@ -1241,17 +1241,19 @@ class Toolbox extends Component<Props, State> {
                     }
                     { buttonsRight.indexOf('tileview') !== -1
                         && <TileViewButton /> }
-                    { buttonsRight.indexOf('invite') !== -1
+                    {/* disable invite and share button' */}
+                    {/* buttonsRight.indexOf('invite') !== -1
                         && <ToolbarButton
                             accessibilityLabel =
                                 { t('toolbar.accessibilityLabel.invite') }
                             icon = { IconInvite }
                             onClick = { this._onToolbarOpenInvite }
-                            tooltip = { t('toolbar.invite') } /> }
+                            tooltip = { t('toolbar.invite') } />
+                    }
                     {
                         buttonsRight.indexOf('info') !== -1
                             && <InfoDialogButton />
-                    }
+                    */}
                     { buttonsRight.indexOf('overflowmenu') !== -1
                         && <OverflowMenuButton
                             isOpen = { _overflowMenuVisible }

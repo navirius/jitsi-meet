@@ -152,6 +152,7 @@ class InfoDialogButton extends Component<Props, State> {
      * @returns {ReactElement}
      */
     render() {
+
         const { _dialIn, _liveStreamViewURL, showLabel, t } = this.props;
         const { showDialog } = this.state;
 

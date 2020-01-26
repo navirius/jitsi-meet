@@ -47,7 +47,7 @@ export function appNavigate(uri: ?string) {
 
         const params = getParams(uri);
 
-        if (params.DialDialusername !== 'undefined') {
+        if (params.username !== 'undefined') {
             APP.conference.changeLocalDisplayName(params.username);
         }
         if (params.password !== 'undefined') {
