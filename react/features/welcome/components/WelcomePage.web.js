@@ -68,6 +68,7 @@ class WelcomePage extends AbstractWelcomePage {
         this._roomInputRef = null;
         this._userInputRef = null;
         this._passwordInputRef = null;
+
         /**
          * The HTML Element used as the container for additional toolbar content. Used
          * for directly appending the additional content template to the dom.
