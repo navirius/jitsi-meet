@@ -22,6 +22,7 @@ import { VIDEO_CONTAINER_TYPE } from './VideoContainer';
 import LocalVideo from './LocalVideo';
 
 const remoteVideos = {};
+
 let localVideoThumbnail = null;
 
 let eventEmitter = null;
@@ -712,6 +713,7 @@ const VideoLayout = {
         }
 
         const currentId = largeVideo.id;
+
         let oldSmallVideo;
 
         if (currentId) {
