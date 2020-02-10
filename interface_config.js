@@ -191,14 +191,13 @@ var interfaceConfig = {
     AUTO_PIN_LATEST_SCREEN_SHARE: 'remote-only',
 
     /**
-     * If we should capture periodic screenshots of the content sharing.
+     * If true, presence status: busy, calling, connected etc. is not displayed.
      */
-    ENABLE_SCREENSHOT_CAPTURE: false,
-
-    // If true, presence status: busy, calling, connected etc. is not displayed
     DISABLE_PRESENCE_STATUS: false,
 
-    // If true, notifications regarding joining/leaving are no longer displayed
+    /**
+     * If true, notifications regarding joining/leaving are no longer displayed.
+     */
     DISABLE_JOIN_LEAVE_NOTIFICATIONS: false,
 
     /**
