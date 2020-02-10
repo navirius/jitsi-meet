@@ -74,8 +74,6 @@ export class AbstractWelcomePage extends Component<Props, *> {
         room: '',
         roomPlaceholder: '',
         updateTimeoutId: undefined,
-        username: '',
-        password: '',
         loginPlaceholder: '',
         isLogined: false
     };

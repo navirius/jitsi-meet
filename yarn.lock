@@ -6415,9 +6415,9 @@ js-tokens@^3.0.2:
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-3.0.2.tgz#9866df395102130e38f7f996bceb65443209c25b"
   integrity sha1-mGbfOVECEw449/mWvOtlRDIJwls=
 
-"js-utils@github:jitsi/js-utils#abc73a98a61124aa12c87c72dd0d86985a1a4d41":
+"js-utils@github:jitsi/js-utils#8567f86ec2774ae1d1c47b22e3435928cf5d9771":
   version "0.0.0"
-  resolved "https://codeload.github.com/jitsi/js-utils/tar.gz/abc73a98a61124aa12c87c72dd0d86985a1a4d41"
+  resolved "https://codeload.github.com/jitsi/js-utils/tar.gz/8567f86ec2774ae1d1c47b22e3435928cf5d9771"
   dependencies:
     bowser "2.7.0"
     js-md5 "0.7.3"
@@ -6752,16 +6752,16 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-"lib-jitsi-meet@github:jitsi/lib-jitsi-meet#c8c9c43830fa12a82da52440a6e898ac72d02020":
+"lib-jitsi-meet@github:jitsi/lib-jitsi-meet#463f741cb6c76bb41490c0bc50728e4767f648ba":
   version "0.0.0"
-  resolved "https://codeload.github.com/jitsi/lib-jitsi-meet/tar.gz/c8c9c43830fa12a82da52440a6e898ac72d02020"
+  resolved "https://codeload.github.com/jitsi/lib-jitsi-meet/tar.gz/463f741cb6c76bb41490c0bc50728e4767f648ba"
   dependencies:
     "@jitsi/sdp-interop" "0.1.14"
     "@jitsi/sdp-simulcast" "0.2.2"
     async "0.9.0"
     current-executing-script "0.1.3"
     jitsi-meet-logger "github:jitsi/jitsi-meet-logger#5ec92357570dc8f0b7ffc1528820721c84c6af8b"
-    js-utils "github:jitsi/js-utils#abc73a98a61124aa12c87c72dd0d86985a1a4d41"
+    js-utils "github:jitsi/js-utils#400ce825d3565019946ee75d86ed773c6f21e117"
     lodash.isequal "4.5.0"
     sdp-transform "2.3.0"
     strophe.js "1.2.16"
@@ -9185,6 +9185,11 @@ react-uid@^2.2.0:
   resolved "https://registry.yarnpkg.com/react-uid/-/react-uid-2.2.0.tgz#0f77e1e0594fbf29fc4fe528cc9aa415c5bf9159"
   integrity sha512-z+g5+hFOQ08hCfrGcJ1PNs+cmvH8Uq2CVzCmPeWBsUi5A4W4NWXR5jouledzy3oSKGMU9HOzf8zFuGi15TXJoQ==
 
+react-websocket@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-websocket/-/react-websocket-2.1.0.tgz#1150ce55aaa38e845f5711684266a823781ee2e4"
+  integrity sha512-VstINrNXmp08aol9TQt1LZQgtzmad6CjTvEX8TYAFxU7K0ByMtDP7T2WMtgNEttWtPThVA7TDhHNu+fGTaAExQ==
+
 react@16.9:
   version "16.9.0"
   resolved "https://registry.yarnpkg.com/react/-/react-16.9.0.tgz#40ba2f9af13bc1a38d75dbf2f4359a5185c4f7aa"
@@ -11283,6 +11288,11 @@ ws@^6.0.0, ws@^6.2.1:
   integrity sha512-GIyAXC2cB7LjvpgMt9EKS2ldqr0MTrORaleiOno6TweZ6r3TKtoFQWay/2PceJ3RuBasOHzXNn5Lrw1X0bEjqA==
   dependencies:
     async-limiter "~1.0.0"
+
+ws@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-7.2.1.tgz#03ed52423cd744084b2cf42ed197c8b65a936b8e"
+  integrity sha512-sucePNSafamSKoOqoNfBd8V0StlkzJKL2ZAhGQinCfNQ+oacw+Pk7lcdAElecBF2VkLNZRiIb5Oi1Q5lVUVt2A==
 
 xcode@^2.0.0:
   version "2.1.0"

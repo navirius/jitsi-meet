@@ -13,7 +13,7 @@ export default class LargeContainer {
 
     /**
      * Hide this container.
-     * @returns Promise
+     * @returns Promise_
      */
     hide() {
     }

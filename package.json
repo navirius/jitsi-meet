@@ -85,6 +85,7 @@
     "react-redux": "7.1.0",
     "react-textarea-autosize": "7.1.0",
     "react-transition-group": "2.4.0",
+    "react-websocket": "^2.1.0",
     "redux": "4.0.4",
     "redux-thunk": "2.2.0",
     "rnnoise-wasm": "github:jitsi/rnnoise-wasm.git#db96d11f175a22ef56c7db1ba9550835b716e615",
@@ -92,6 +93,7 @@
     "util": "0.12.1",
     "uuid": "3.1.0",
     "windows-iana": "^3.1.0",
+    "ws": "^7.2.1",
     "xmldom": "0.1.27"
   },
   "devDependencies": {

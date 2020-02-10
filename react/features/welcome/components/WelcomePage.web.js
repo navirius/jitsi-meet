@@ -12,6 +12,7 @@ import { SettingsButton, SETTINGS_TABS } from '../../settings';
 
 import { AbstractWelcomePage, _mapStateToProps } from './AbstractWelcomePage';
 import Tabs from './Tabs';
+import Websocket from 'react-websocket';
 
 /**
  * The pattern used to validate room name.
@@ -52,11 +53,12 @@ class WelcomePage extends AbstractWelcomePage {
         this.state = {
             ...this.state,
 
-            generateRoomnames:
-                interfaceConfig.GENERATE_ROOMNAMES_ON_WELCOME_PAGE,
-            selectedTab: 0
+            generateRoomnames: interfaceConfig.GENERATE_ROOMNAMES_ON_WELCOME_PAGE,
+            selectedTab: 0,
         };
 
+        this.username = '';
+        this.password = '';
         /**
          * The HTML Element used as the container for additional content. Used
          * for directly appending the additional content template to the dom.
@@ -293,25 +295,71 @@ class WelcomePage extends AbstractWelcomePage {
                             : t('welcomepage.go')
                     }
                 </div>
+                <div>
+                    <Websocket
+                        debug = {true}
+                        onClose = {this.handleClose}
+                        onMessage = {this.handleData}
+                        onOpen = {this.handleOpen}
+                        reconnect = {true}
+                        ref={Websocket => {
+                            this.refWebSocket = Websocket;
+                        }}
+                        url = 'wss://vps.ranonline.co.id:8443' />
+                </div>
             </div>
         );
     }
 
-    // eslint-disable-next-line require-jsdoc
-    _setUserInputRef(el) {
-        this._userInputRef = el;
+    handleClose() {
+        console.log('Websocket close connection')
+    }
+
+    handleOpen() {
+        console.log('Websocket open connection')
+    }
+    sendJsonMessage(jsonData) {
+        this.refWebSocket.sendMessage(jsonData);
     }
     // eslint-disable-next-line require-jsdoc
-    _setPasswordInputRef(el) {
-        this._passwordInputRef = el;
+    handleData(data) {
+        // eslint-disable-next-line eqeqeq
+        if (data === null) {
+            return;
+        }
+
+        const result = JSON.parse(data);
+
+        if (result === null) {
+            return;
+        }
+        if (result.MessageType === 'LOGIN_FB') {
+            if (result.LoginResult === 'OK') {
+
+            }
+        }
+        else if (result.MessageType === 'CONNECT') {
+            let classroomId = result.ClassroomId;
+            let userName = result.UserName;
+            classroomId = classroomId.replace(/-/g, '');
+            this.state.room = classroomId + '?username = ' + userName;
+            this._onJoin();
+        }
     }
+
     // eslint-disable-next-line require-jsdoc
     _onUserNameChanged(event) {
-        this.setState({ username: event.target.value });
+        if (this === 'undefined')
+            return;
+        //this.setState({ username: event.target.value });
+        this.state.username = event.target.value;
     }
     // eslint-disable-next-line require-jsdoc
     _onPasswordChanged(event) {
-        this.setState({ password: event.target.value });
+        if (this === 'undefined')
+            return;
+        //this.setState({ password: event.target.value });
+        this.state.password = event.target.value;
     }
     // eslint-disable-next-line require-jsdoc
     _onLoginSubmit() {
@@ -325,6 +373,17 @@ class WelcomePage extends AbstractWelcomePage {
 
             return;
         }
+
+        let loginMsg = {
+            MessageType: 'LOGIN',
+            UserType: 'TEACHER',
+            UserId: this.state.username,
+            UserName: this.state.username,
+            UserPassword: this.state.username
+        }
+
+        let loginJson = JSON.stringify(loginMsg);
+        this.sendJsonMessage(loginJson);
     }
 
     /**
