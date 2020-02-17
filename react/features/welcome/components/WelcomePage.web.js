@@ -69,7 +69,7 @@ class WelcomePage extends AbstractWelcomePage {
         this._additionalContentRef = null;
 
         this._roomInputRef = null;
-        this._userInputRef = null;
+        this._usernameInputRef = null;
         this._passwordInputRef = null;
 
         /**
@@ -105,9 +105,12 @@ class WelcomePage extends AbstractWelcomePage {
         // Bind event handlers so they are only bound once per instance.
         this._onFormSubmit = this._onFormSubmit.bind(this);
         this._onRoomChange = this._onRoomChange.bind(this);
+        this._onLoginSubmit = this._onLoginSubmit.bind(this);
+        this._onUserNameChanged = this._onUserNameChanged.bind(this);
         this._setAdditionalContentRef
             = this._setAdditionalContentRef.bind(this);
         this._setRoomInputRef = this._setRoomInputRef.bind(this);
+        this._setUsernameInputRef = this._setUsernameInputRef.bind(this);
         this._setAdditionalToolbarContentRef
             = this._setAdditionalToolbarContentRef.bind(this);
         this._onTabSelected = this._onTabSelected.bind(this);
@@ -203,7 +206,7 @@ class WelcomePage extends AbstractWelcomePage {
                             className = 'enter-room-input-container'>
                             { t('welcomepage.enterLogin')}
                         </div>
-                        <form>
+                        <form onSubmit = { this._onLoginSubmit }>
                             <label>Login Name : </label>
                             <input
                                 autoFocus = { true }
@@ -212,21 +215,22 @@ class WelcomePage extends AbstractWelcomePage {
                                 onChange = { this._onUserNameChanged }
                                 pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
                                 placeholder = { this.state.loginPlaceholder }
+                                ref = { this._setUsernameInputRef }
                                 title = 'Login Name'
                                 type = 'text'
                                 value = { this.state.username } />
                             <br />
-                            <label>Password</label>
-                            <input
-                                autoFocus = { true }
-                                className = 'enter-room-input'
-                                id = 'password_field'
-                                onChange = { this._onPasswordChanged }
-                                pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
-                                placeholder = { this.state.loginPlaceholder }
-                                title = 'Password'
-                                type = 'password'
-                                value = { this.state.password } />
+                            {/*<label>Password</label>*/}
+                            {/*<input*/}
+                            {/*    autoFocus = { true }*/}
+                            {/*    className = 'enter-room-input'*/}
+                            {/*    id = 'password_field'*/}
+                            {/*    onChange = { this._onPasswordChanged }*/}
+                            {/*    pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }*/}
+                            {/*    placeholder = { this.state.loginPlaceholder }*/}
+                            {/*    title = 'Password'*/}
+                            {/*    type = 'password'*/}
+                            {/*    value = { this.state.password } />*/}
                         </form>
                     </div>
                     <div
@@ -295,18 +299,18 @@ class WelcomePage extends AbstractWelcomePage {
                             : t('welcomepage.go')
                     }
                 </div>
-                <div>
-                    <Websocket
-                        debug = {true}
-                        onClose = {this.handleClose}
-                        onMessage = {this.handleData}
-                        onOpen = {this.handleOpen}
-                        reconnect = {true}
-                        ref={Websocket => {
-                            this.refWebSocket = Websocket;
-                        }}
-                        url = 'wss://vps.ranonline.co.id:8443' />
-                </div>
+                {/*<div>*/}
+                {/*    <Websocket*/}
+                {/*        debug = {true}*/}
+                {/*        onClose = {this.handleClose}*/}
+                {/*        onMessage = {this.handleData}*/}
+                {/*        onOpen = {this.handleOpen}*/}
+                {/*        reconnect = {true}*/}
+                {/*        ref={Websocket => {*/}
+                {/*            this.refWebSocket = Websocket;*/}
+                {/*        }}*/}
+                {/*        url = 'wss://vps.ranonline.co.id:8443' />*/}
+                {/*</div>*/}
             </div>
         );
     }
@@ -349,10 +353,7 @@ class WelcomePage extends AbstractWelcomePage {
 
     // eslint-disable-next-line require-jsdoc
     _onUserNameChanged(event) {
-        if (this === 'undefined')
-            return;
-        //this.setState({ username: event.target.value });
-        this.state.username = event.target.value;
+        super._onUsernameChanged(event.data.value);
     }
     // eslint-disable-next-line require-jsdoc
     _onPasswordChanged(event) {
@@ -368,22 +369,39 @@ class WelcomePage extends AbstractWelcomePage {
 
             return;
         }
-        if (this.state.password.length === 0) {
-            alert('Password can not empty');
 
-            return;
-        }
+        let classroomIdRequestModel = {};
+        classroomIdRequestModel.userIdRequest = this.state.username;
+        fetch('https://127.0.0.1/get-classroom-id', {
+            method: 'POST',
+            body: JSON.stringify(classroomIdRequestModel),
+            headers: { "Content-type": "application/json; charset=UTF-8" }
+        }).then(response => {
+            return response.json();
+        }).then(json => {
+            let responseModel = JSON.parse(json);
+            let classroomId = responseModel.classroomId;
 
-        let loginMsg = {
-            MessageType: 'LOGIN',
-            UserType: 'TEACHER',
-            UserId: this.state.username,
-            UserName: this.state.username,
-            UserPassword: this.state.username
-        }
+            this.state.room = classroomId;
+            this.state.generatedRoomname = classroomId;
+            this._onJoin();
+        })
+        // if (this.state.password.length === 0) {
+        //     alert('Password can not empty');
+        //
+        //     return;
+        // }
 
-        let loginJson = JSON.stringify(loginMsg);
-        this.sendJsonMessage(loginJson);
+        // let loginMsg = {
+        //     MessageType: 'LOGIN',
+        //     UserType: 'TEACHER',
+        //     UserId: this.state.username,
+        //     UserName: this.state.username,
+        //     UserPassword: this.state.username
+        // }
+        //
+        // let loginJson = JSON.stringify(loginMsg);
+        // this.sendJsonMessage(loginJson);
     }
 
     /**
@@ -487,6 +505,9 @@ class WelcomePage extends AbstractWelcomePage {
         this._additionalToolbarContentRef = el;
     }
 
+    _setUsernameInputRef(el) {
+        this._usernameInputRef = el;
+    }
     /**
      * Sets the internal reference to the HTMLInputElement used to hold the
      * welcome page input room element.

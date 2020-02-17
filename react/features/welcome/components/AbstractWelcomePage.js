@@ -75,7 +75,8 @@ export class AbstractWelcomePage extends Component<Props, *> {
         roomPlaceholder: '',
         updateTimeoutId: undefined,
         loginPlaceholder: '',
-        isLogined: false
+        isLogined: false,
+        username:''
     };
 
     /**
@@ -92,6 +93,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
             = this._animateRoomnameChanging.bind(this);
         this._onJoin = this._onJoin.bind(this);
         this._onRoomChange = this._onRoomChange.bind(this);
+        this._onUsernameChanged = this._onUsernameChanged.bind(this);
         this._updateRoomname = this._updateRoomname.bind(this);
     }
 
@@ -180,6 +182,7 @@ export class AbstractWelcomePage extends Component<Props, *> {
      */
     _onJoin() {
         const room = this.state.room || this.state.generatedRoomname;
+        const username = this.state.username;
 
         sendAnalytics(
             createWelcomePageEvent('clicked', 'joinButton', {
@@ -195,11 +198,12 @@ export class AbstractWelcomePage extends Component<Props, *> {
             const onAppNavigateSettled
                 = () => this._mounted && this.setState({ joining: false });
 
-            this.props.dispatch(appNavigate(room))
+            this.props.dispatch(appNavigate(room, username))
                 .then(onAppNavigateSettled, onAppNavigateSettled);
         }
     }
 
+    _onUsernameChanged: (string) => void;
     _onRoomChange: (string) => void;
 
     /**
@@ -212,6 +216,10 @@ export class AbstractWelcomePage extends Component<Props, *> {
      */
     _onRoomChange(value: string) {
         this.setState({ room: value });
+    }
+
+    _onUsernameChanged(value: string) {
+        this.setState({ username: value })
     }
 
     _updateRoomname: () => void;

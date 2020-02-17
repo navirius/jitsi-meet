@@ -40,9 +40,9 @@ declare var APP: Object;
  * scheme, or a mere room name.
  * @returns {Function}
  */
-export function appNavigate(uri: ?string) {
+export function appNavigate(uri: ?string, username: ?string) {
     return async (dispatch: Dispatch<any>, getState: Function) => {
-        console.log(`uri : ${uri}`, uri);
+        console.log(`uri : ${uri} username : ${username}`, uri, username);
         let location = parseURIString(uri);
 
         const params = getParams(uri);
@@ -50,9 +50,11 @@ export function appNavigate(uri: ?string) {
         if (params.username !== 'undefined') {
             APP.conference.changeLocalDisplayName(params.username);
         }
-        if (params.password !== 'undefined') {
-
+        if(username !== 'undefined')
+        {
+            APP.conference.changeLocalDisplayName(username)
         }
+
 
         // If the specified location (URI) does not identify a host, use the app's
         // default.
