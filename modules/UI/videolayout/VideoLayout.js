@@ -175,9 +175,9 @@ const VideoLayout = {
 
         // Make sure track's muted state is reflected
         if (stream.getType() === 'audio') {
-            this.onAudioMute(stream.getParticipantId(), stream.isMuted());
+            this.onAudioMute(id, stream.isMuted());
         } else {
-            this.onVideoMute(stream.getParticipantId(), stream.isMuted());
+            this.onVideoMute(id, stream.isMuted());
         }
     },
 
@@ -205,8 +205,7 @@ const VideoLayout = {
     updateMutedForNoTracks(participantId, mediaType) {
         const participant = APP.conference.getParticipantById(participantId);
 
-        if (participant
-                && !participant.getTracksByMediaType(mediaType).length) {
+        if (participant && !participant.getTracksByMediaType(mediaType).length) {
             if (mediaType === 'audio') {
                 APP.UI.setAudioMuted(participantId, true);
             } else if (mediaType === 'video') {
@@ -330,35 +329,6 @@ const VideoLayout = {
     },
 
     /**
-     * Shows a visual indicator for the moderator of the conference.
-     * On local or remote participants.
-     */
-    showModeratorIndicator() {
-        const isModerator = APP.conference.isModerator;
-
-        if (isModerator) {
-            localVideoThumbnail.addModeratorIndicator();
-        } else {
-            localVideoThumbnail.removeModeratorIndicator();
-        }
-
-        APP.conference.listMembers().forEach(member => {
-            const id = member.getId();
-            const remoteVideo = remoteVideos[id];
-
-            if (!remoteVideo) {
-                return;
-            }
-
-            if (member.isModerator()) {
-                remoteVideo.addModeratorIndicator();
-            }
-
-            remoteVideo.updateRemoteVideoMenu();
-        });
-    },
-
-    /**
      * On audio muted event.
      */
     onAudioMute(id, isMuted) {
@@ -372,7 +342,7 @@ const VideoLayout = {
             }
 
             remoteVideo.showAudioIndicator(isMuted);
-            remoteVideo.updateRemoteVideoMenu(isMuted);
+            remoteVideo.updateRemoteVideoMenu();
         }
     },
 

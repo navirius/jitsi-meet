@@ -435,7 +435,6 @@ export default {
      * the tracks won't exist).
      */
     _localTracksInitialized: false,
-    isModerator: false,
     isSharingScreen: false,
 
     /**
@@ -927,14 +926,6 @@ export default {
     },
 
     /**
-     * Retrieve list of conference participants (without local user).
-     * @returns {JitsiParticipant[]}
-     */
-    listMembers() {
-        return room.getParticipants();
-    },
-
-    /**
      * Retrieve list of ids of conference participants (without local user).
      * @returns {string[]}
      */
@@ -951,6 +942,16 @@ export default {
         const user = room.getParticipantById(id);
 
         return user && user.isModerator();
+    },
+
+    /**
+     * Retrieve list of conference participants (without local user).
+     * @returns {JitsiParticipant[]}
+     *
+     * NOTE: Used by jitsi-meet-torture!
+     */
+    listMembers() {
+        return room.getParticipants();
     },
 
     get membersCount() {
@@ -1894,9 +1895,6 @@ export default {
 
             logger.log(`USER ${id} connnected:`, user);
             APP.UI.addUser(user);
-
-            // check the roles for the new user and reflect them
-            APP.UI.updateUserRole(user);
         });
 
         room.on(JitsiConferenceEvents.USER_LEFT, (id, user) => {
@@ -1927,19 +1925,8 @@ export default {
                 logger.info(`My role changed, new role: ${role}`);
 
                 APP.store.dispatch(localParticipantRoleChanged(role));
-
-                if (this.isModerator !== room.isModerator()) {
-                    this.isModerator = room.isModerator();
-                    APP.UI.updateLocalRole(room.isModerator());
-                }
             } else {
                 APP.store.dispatch(participantRoleChanged(id, role));
-
-                const user = room.getParticipantById(id);
-
-                if (user) {
-                    APP.UI.updateUserRole(user);
-                }
             }
         });
 
