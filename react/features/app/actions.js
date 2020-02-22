@@ -50,10 +50,15 @@ export function appNavigate(uri: ?string, username: ?string) {
         if (params.username !== 'undefined') {
             APP.conference.changeLocalDisplayName(params.username);
         }
-        if(username !== 'undefined')
+
+        if(username!=="")
         {
             APP.conference.changeLocalDisplayName(username)
         }
+        // if(username !== 'undefined')
+        // {
+        //     APP.conference.changeLocalDisplayName(username)
+        // }
 
 
         // If the specified location (URI) does not identify a host, use the app's
