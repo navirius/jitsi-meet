@@ -106,7 +106,7 @@ class WelcomePage extends AbstractWelcomePage {
         this._onFormSubmit = this._onFormSubmit.bind(this);
         this._onRoomChange = this._onRoomChange.bind(this);
         this._onLoginSubmit = this._onLoginSubmit.bind(this);
-        this._onUserNameChanged = this._onUserNameChanged.bind(this);
+        this._onUsernameChanged = this._onUsernameChanged.bind(this);
         this._setAdditionalContentRef
             = this._setAdditionalContentRef.bind(this);
         this._setRoomInputRef = this._setRoomInputRef.bind(this);
@@ -114,6 +114,7 @@ class WelcomePage extends AbstractWelcomePage {
         this._setAdditionalToolbarContentRef
             = this._setAdditionalToolbarContentRef.bind(this);
         this._onTabSelected = this._onTabSelected.bind(this);
+        this.getClassroomFromServer = this.getClassroomFromServer.bind(this);
     }
 
     /**
@@ -212,7 +213,7 @@ class WelcomePage extends AbstractWelcomePage {
                                 autoFocus = { true }
                                 className = 'enter-room-input'
                                 id = 'username_field'
-                                onChange = { this._onUserNameChanged }
+                                onChange = { this._onUsernameChanged }
                                 pattern = { ROOM_NAME_VALIDATE_PATTERN_STR }
                                 placeholder = { this.state.loginPlaceholder }
                                 ref = { this._setUsernameInputRef }
@@ -352,8 +353,8 @@ class WelcomePage extends AbstractWelcomePage {
     }
 
     // eslint-disable-next-line require-jsdoc
-    _onUserNameChanged(event) {
-        super._onUsernameChanged(event.data.value);
+    _onUsernameChanged(event) {
+        super._onUsernameChanged(event.target.value);
     }
     // eslint-disable-next-line require-jsdoc
     _onPasswordChanged(event) {
@@ -363,7 +364,7 @@ class WelcomePage extends AbstractWelcomePage {
         this.state.password = event.target.value;
     }
     // eslint-disable-next-line require-jsdoc
-    _onLoginSubmit() {
+    async _onLoginSubmit() {
         if (this.state.username.length === 0) {
             alert('UserName can not empty');
 
@@ -372,20 +373,7 @@ class WelcomePage extends AbstractWelcomePage {
 
         let classroomIdRequestModel = {};
         classroomIdRequestModel.userIdRequest = this.state.username;
-        fetch('https://127.0.0.1/get-classroom-id', {
-            method: 'POST',
-            body: JSON.stringify(classroomIdRequestModel),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
-        }).then(response => {
-            return response.json();
-        }).then(json => {
-            let responseModel = JSON.parse(json);
-            let classroomId = responseModel.classroomId;
-
-            this.state.room = classroomId;
-            this.state.generatedRoomname = classroomId;
-            this._onJoin();
-        })
+        await this.getClassroomFromServer(classroomIdRequestModel)
         // if (this.state.password.length === 0) {
         //     alert('Password can not empty');
         //
@@ -404,6 +392,24 @@ class WelcomePage extends AbstractWelcomePage {
         // this.sendJsonMessage(loginJson);
     }
 
+    async getClassroomFromServer(classroomIdRequestModel)
+    {
+        const response = await fetch('https://178.128.50.99:5443/get-classroom-id', {
+            method: 'POST',
+            body: JSON.stringify(classroomIdRequestModel),
+            headers: { "Content-type": "application/json; charset=UTF-8" },
+        });
+
+        const responseJson = await response.json();
+        console.log("receive reply from API " + responseJson);
+        //let responseModel = JSON.parse(responseJson);
+        let classroomId = responseJson.classroomId;
+        let classroomIdParsed =  classroomId.replace(/-/g, "");
+        this.state.username = responseJson.userIdRequest;
+        this.state.room = classroomIdParsed;
+        this.state.generatedRoomname = classroomIdParsed;
+        this._onJoin();
+    }
     /**
      * Prevents submission of the form and delegates join logic.
      *
